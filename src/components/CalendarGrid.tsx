@@ -2,7 +2,7 @@ import { DayCell, type DayCellProps } from "./DayCell";
 
 export function CalendarGrid() {
     // Sample data matching the reference HTML
-    const days: DayCellProps[] = [
+    const daysFixed: DayCellProps[] = [
         // Week 1
         {
             weekName: "Sun",
@@ -168,6 +168,8 @@ export function CalendarGrid() {
         { dayNumber: 30 },
         { dayNumber: 1, isNonMonthDay: true },
     ];
+
+	const days: DayCellProps[] = [{ dayNumber: 1}];
 
     return (
         <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-7 grid-rows-5 bg-border-color gap-px p-px">
