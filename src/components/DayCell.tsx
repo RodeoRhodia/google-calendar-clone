@@ -41,7 +41,7 @@ export default function DayCell({
         />
       </div>
       {events.length > 0 && (
-        <div className={`flex flex-col gap-2 flex-grow overflow-hidden ${isOldMonthDay ? 'opacity-50' : ''}`}>
+        <div className={`flex flex-col gap-2 grow overflow-hidden ${isOldMonthDay ? 'opacity-50' : ''}`}>
           {events.map((event, index) =>
             event.type === 'all-day' ? (
               <AllDayEvent key={index} name={event.name} color={event.color} />
