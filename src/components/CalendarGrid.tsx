@@ -5,6 +5,11 @@ import {
     startOfMonth,
     endOfWeek,
     endOfMonth,
+    format,
+    isSameMonth,
+	isToday,
+	isPast,
+	startOfDay
 } from "date-fns";
 
 type CalendarGridProps = {
@@ -19,7 +24,7 @@ export function CalendarGrid({ currentDate }: CalendarGridProps) {
             weekName: "Sun",
             dayNumber: 28,
             isNonMonthDay: true,
-            isOldMonthDay: true,
+            isOldDay: true,
             events: [
                 {
                     type: "all-day" as const,
@@ -43,32 +48,32 @@ export function CalendarGrid({ currentDate }: CalendarGridProps) {
             weekName: "Mon",
             dayNumber: 29,
             isNonMonthDay: true,
-            isOldMonthDay: true,
+            isOldDay: true,
         },
         {
             weekName: "Tue",
             dayNumber: 30,
             isNonMonthDay: true,
-            isOldMonthDay: true,
+            isOldDay: true,
         },
         {
             weekName: "Wed",
             dayNumber: 31,
             isNonMonthDay: true,
-            isOldMonthDay: true,
+            isOldDay: true,
         },
-        { weekName: "Thu", dayNumber: 1, isOldMonthDay: true },
-        { weekName: "Fri", dayNumber: 2, isOldMonthDay: true },
-        { weekName: "Sat", dayNumber: 3, isOldMonthDay: true },
+        { weekName: "Thu", dayNumber: 1, isOldDay: true },
+        { weekName: "Fri", dayNumber: 2, isOldDay: true },
+        { weekName: "Sat", dayNumber: 3, isOldDay: true },
 
         // Week 2
-        { dayNumber: 4, isOldMonthDay: true },
-        { dayNumber: 5, isOldMonthDay: true },
-        { dayNumber: 6, isOldMonthDay: true },
-        { dayNumber: 7, isOldMonthDay: true },
+        { dayNumber: 4, isOldDay: true },
+        { dayNumber: 5, isOldDay: true },
+        { dayNumber: 6, isOldDay: true },
+        { dayNumber: 7, isOldDay: true },
         {
             dayNumber: 8,
-            isOldMonthDay: true,
+            isOldDay: true,
             events: [
                 {
                     type: "all-day" as const,
@@ -90,7 +95,7 @@ export function CalendarGrid({ currentDate }: CalendarGridProps) {
         },
         {
             dayNumber: 9,
-            isOldMonthDay: true,
+            isOldDay: true,
             events: [
                 {
                     type: "all-day" as const,
@@ -130,12 +135,12 @@ export function CalendarGrid({ currentDate }: CalendarGridProps) {
             ],
             showMoreCount: 2,
         },
-        { dayNumber: 10, isOldMonthDay: true },
+        { dayNumber: 10, isOldDay: true },
 
         // Week 3
-        { dayNumber: 11, isOldMonthDay: true },
-        { dayNumber: 12, isOldMonthDay: true },
-        { dayNumber: 13, isOldMonthDay: true },
+        { dayNumber: 11, isOldDay: true },
+        { dayNumber: 12, isOldDay: true },
+        { dayNumber: 13, isOldDay: true },
         { dayNumber: 14, isToday: true },
         { dayNumber: 15 },
         { dayNumber: 16 },
@@ -185,12 +190,25 @@ export function CalendarGrid({ currentDate }: CalendarGridProps) {
         end: endOfWeek(endOfMonth(currentDate)),
     });
 
-    const days: DayCellProps[] = visibleDatesInterval.map((date) => {
-        return { dayNumber: date.getDate() };
+    let days: DayCellProps[] = visibleDatesInterval.map((date, index) => {
+        let dayCell: DayCellProps = {
+            dayNumber: date.getDate(),
+            isNonMonthDay: !isSameMonth(date, currentDate),
+			isToday: isToday(date),
+			isOldDay: isPast(date) && !isToday(date)
+        };
+
+        if (index < 7) {
+            dayCell = { ...dayCell, weekName: format(date, "EEE") };
+        }
+
+        return dayCell;
     });
 
+    // days = daysFixed;
+
     return (
-        <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-7 grid-rows-5 bg-border-color gap-px p-px">
+        <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-7 auto-rows-fr bg-border-color gap-px p-px">
             {days.map((day, index) => (
                 <DayCell key={index} {...day} />
             ))}

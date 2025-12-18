@@ -13,7 +13,7 @@ export interface DayCellProps {
     dayNumber: number;
     isToday?: boolean;
     isNonMonthDay?: boolean;
-    isOldMonthDay?: boolean;
+    isOldDay?: boolean;
     events?: Event[];
     showMoreCount?: number;
 }
@@ -23,7 +23,7 @@ export function DayCell({
     dayNumber,
     isToday = false,
     isNonMonthDay = false,
-    isOldMonthDay = false,
+    isOldDay = false,
     events = [],
     showMoreCount,
 }: DayCellProps) {
@@ -33,7 +33,7 @@ export function DayCell({
                 isNonMonthDay ? "opacity-75" : ""
             }`}
         >
-            <div className={isOldMonthDay ? "opacity-50" : ""}>
+            <div className={isOldDay ? "opacity-50" : ""}>
                 <DayHeader
                     weekName={weekName}
                     dayNumber={dayNumber}
@@ -43,7 +43,7 @@ export function DayCell({
             {events.length > 0 && (
                 <div
                     className={`flex flex-col gap-2 grow overflow-hidden ${
-                        isOldMonthDay ? "opacity-50" : ""
+                        isOldDay ? "opacity-50" : ""
                     }`}
                 >
                     {events.map((event, index) =>
