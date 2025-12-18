@@ -1,5 +1,5 @@
-import CalendarHeader from './CalendarHeader';
-import CalendarGrid from './CalendarGrid';
+import { CalendarHeader } from './CalendarHeader';
+import { CalendarGrid } from './CalendarGrid';
 
 export default function Calendar() {
   return (

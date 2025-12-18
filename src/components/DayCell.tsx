@@ -1,4 +1,4 @@
-import DayHeader from './DayHeader';
+import { DayHeader } from './DayHeader';
 import { AllDayEvent, TimedEvent } from './Event';
 
 interface Event {

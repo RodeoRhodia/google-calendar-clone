@@ -1,4 +1,4 @@
-export default function CalendarHeader() {
+export function CalendarHeader() {
   return (
     <div className="p-4 w-full flex items-center">
       <button className="bg-none border border-border-color rounded px-4 py-2 text-base cursor-pointer transition-colors duration-250 text-gray-800 hover:bg-gray-100 mr-2">

@@ -4,7 +4,7 @@ interface DayHeaderProps {
   isToday?: boolean;
 }
 
-export default function DayHeader({ weekName, dayNumber, isToday = false }: DayHeaderProps) {
+export function DayHeader({ weekName, dayNumber, isToday = false }: DayHeaderProps) {
   return (
     <div className="mb-1 flex flex-col items-center relative">
       {weekName && (

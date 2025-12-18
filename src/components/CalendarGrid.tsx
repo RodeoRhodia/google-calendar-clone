@@ -1,6 +1,6 @@
 import DayCell from './DayCell';
 
-export default function CalendarGrid() {
+export function CalendarGrid() {
   // Sample data matching the reference HTML
   const days = [
     // Week 1
