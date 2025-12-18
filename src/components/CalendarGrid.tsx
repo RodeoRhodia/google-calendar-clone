@@ -69,7 +69,7 @@ export default function CalendarGrid() {
   ];
 
   return (
-    <div className="grow overflow-y-auto grid grid-cols-7 auto-rows-[minmax(100px,1fr)] bg-border-color gap-px p-px">
+    <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-7 grid-rows-5 bg-border-color gap-px p-px">
       {days.map((day, index) => (
         <DayCell key={index} {...day} />
       ))}

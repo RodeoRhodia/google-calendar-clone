@@ -20,8 +20,7 @@ body {
 
 #root {
   height: 100vh;
-  max-width: 1500px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 /* Custom Tailwind utilities for calendar colors */
