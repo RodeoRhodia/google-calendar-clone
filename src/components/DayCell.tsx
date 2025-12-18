@@ -18,7 +18,7 @@ interface DayCellProps {
   showMoreCount?: number;
 }
 
-export default function DayCell({
+export function DayCell({
   weekName,
   dayNumber,
   isToday = false,

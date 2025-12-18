@@ -1,4 +1,4 @@
-import DayCell from './DayCell';
+import { DayCell } from './DayCell';
 
 export function CalendarGrid() {
   // Sample data matching the reference HTML
