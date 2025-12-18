@@ -1,6 +1,17 @@
 import { DayCell, type DayCellProps } from "./DayCell";
+import {
+    eachDayOfInterval,
+    startOfWeek,
+    startOfMonth,
+    endOfWeek,
+    endOfMonth,
+} from "date-fns";
 
-export function CalendarGrid() {
+type CalendarGridProps = {
+    currentDate: Date;
+};
+
+export function CalendarGrid({ currentDate }: CalendarGridProps) {
     // Sample data matching the reference HTML
     const daysFixed: DayCellProps[] = [
         // Week 1
@@ -169,7 +180,14 @@ export function CalendarGrid() {
         { dayNumber: 1, isNonMonthDay: true },
     ];
 
-	const days: DayCellProps[] = [{ dayNumber: 1}];
+    const visibleDatesInterval: Date[] = eachDayOfInterval({
+        start: startOfWeek(startOfMonth(currentDate)),
+        end: endOfWeek(endOfMonth(currentDate)),
+    });
+
+    const days: DayCellProps[] = visibleDatesInterval.map((date) => {
+        return { dayNumber: date.getDate() };
+    });
 
     return (
         <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-7 grid-rows-5 bg-border-color gap-px p-px">
