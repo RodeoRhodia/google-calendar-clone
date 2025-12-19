@@ -5,7 +5,7 @@ interface Event {
     type: "all-day" | "timed";
     name: string;
     color: "blue" | "red" | "green";
-    time?: string;
+    startTime?: string;
 }
 
 export interface DayCellProps {
@@ -60,7 +60,7 @@ export function DayCell({
                             <TimedEvent
                                 key={index}
                                 name={event.name}
-                                time={event.time!}
+                                startTime={event.startTime!}
                                 color={event.color}
                             />
                         )
