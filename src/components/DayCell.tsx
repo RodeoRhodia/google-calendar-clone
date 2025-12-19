@@ -1,12 +1,9 @@
+import { useState } from "react";
+import { format } from "date-fns";
 import { DayHeader } from "./DayHeader";
 import { AllDayEvent, TimedEvent } from "./Event";
-
-interface Event {
-    type: "all-day" | "timed";
-    name: string;
-    color: "blue" | "red" | "green";
-    startTime?: string;
-}
+import { EditEventForm } from "./EditEventForm";
+import { type Event } from "../contexts/EventContext";
 
 export interface DayCellProps {
     weekName?: string;
@@ -29,6 +26,9 @@ export function DayCell({
     showMoreCount,
     date,
 }: DayCellProps) {
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const dateString = format(date, "M/d/yy");
+
     return (
         <div
             className={`bg-white p-1 overflow-hidden flex flex-col group ${
@@ -49,19 +49,21 @@ export function DayCell({
                         isOldDay ? "opacity-50" : ""
                     }`}
                 >
-                    {events.map((event, index) =>
+                    {events.map((event) =>
                         event.type === "all-day" ? (
                             <AllDayEvent
-                                key={index}
+                                key={event.id}
                                 name={event.name}
                                 color={event.color}
+                                onClick={() => setSelectedEvent(event)}
                             />
                         ) : (
                             <TimedEvent
-                                key={index}
+                                key={event.id}
                                 name={event.name}
                                 startTime={event.startTime!}
                                 color={event.color}
+                                onClick={() => setSelectedEvent(event)}
                             />
                         )
                     )}
@@ -71,6 +73,14 @@ export function DayCell({
                 <button className="border-none bg-none font-bold text-gray-600 cursor-pointer w-full">
                     +{showMoreCount} More
                 </button>
+            )}
+            {selectedEvent && (
+                <EditEventForm
+                    isOpen={true}
+                    onClose={() => setSelectedEvent(null)}
+                    date={dateString}
+                    event={selectedEvent}
+                />
             )}
         </div>
     );
