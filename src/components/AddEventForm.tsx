@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface AddEventFormProps {
     isOpen: boolean;
@@ -6,7 +7,78 @@ interface AddEventFormProps {
     date: string;
 }
 
+interface Event {
+    type: "all-day" | "timed";
+    name: string;
+    color: "blue" | "red" | "green";
+    startTime?: string;
+    endTime?: string;
+}
+
+type EventsMap = Record<string, Event[]>;
+
 export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
+    const [, setEvents] = useLocalStorage<EventsMap>("EVENTS", {});
+
+    function submitEventForm(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+
+        const name = (formData.get("name") as string).trim();
+        const allDay = formData.get("all-day") === "on";
+        const startTime = formData.get("start-time") as string;
+        const endTime = formData.get("end-time") as string;
+        const color = formData.get("color") as "blue" | "red" | "green";
+
+        // Validation
+        if (!name) {
+            alert("Name is required");
+            return;
+        }
+
+        if (!allDay) {
+            if (!startTime) {
+                alert("Start time is required");
+                return;
+            }
+            if (!endTime) {
+                alert("End time is required");
+                return;
+            }
+        }
+
+        // Create event object
+        const event: Event = {
+            type: allDay ? "all-day" : "timed",
+            name,
+            color,
+            ...(allDay ? {} : { startTime, endTime }),
+        };
+
+        // Format date as YYYY-MM-DD
+        const dateKey = new Date(date).toISOString().split("T")[0];
+
+        // Console log all fields
+        console.log("Form fields:", {
+            name,
+            allDay,
+            startTime,
+            endTime,
+            color,
+        });
+        console.log("Event object:", event);
+        console.log("Date key:", dateKey);
+
+        // Save to localStorage
+        setEvents((prev) => ({
+            ...prev,
+            [dateKey]: [...(prev[dateKey] || []), event],
+        }));
+
+        console.log("Event saved to localStorage!");
+        onClose();
+    }
+
     if (!isOpen) return null;
 
     return createPortal(
@@ -26,7 +98,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                         &times;
                     </button>
                 </div>
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={submitEventForm}>
                     <div className="flex flex-col mb-4">
                         <label
                             htmlFor="name"
