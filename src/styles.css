@@ -24,16 +24,47 @@ body {
 }
 
 /* Custom Tailwind utilities for calendar colors */
-.bg-blue-calendar {
-  background-color: var(--blue-background);
-}
+@layer utilities {
+  .bg-blue-calendar {
+    background-color: var(--blue-background);
+  }
 
-.bg-red-calendar {
-  background-color: var(--red-background);
-}
+  .bg-red-calendar {
+    background-color: var(--red-background);
+  }
 
-.bg-green-calendar {
-  background-color: var(--green-background);
+  .bg-green-calendar {
+    background-color: var(--green-background);
+  }
+
+  .before\:bg-blue-calendar::before {
+    background-color: var(--blue-background);
+  }
+
+  .before\:bg-red-calendar::before {
+    background-color: var(--red-background);
+  }
+
+  .before\:bg-green-calendar::before {
+    background-color: var(--green-background);
+  }
+
+  /* Support for has-[:checked] and has-[:focus] pseudo-class variants */
+  .has-\[\:checked\]\:before\:opacity-100:has(:checked)::before {
+    opacity: 1;
+  }
+
+  .has-\[\:focus\]\:before\:outline:has(:focus)::before {
+    outline-style: solid;
+  }
+
+  .has-\[\:focus\]\:before\:outline-1:has(:focus)::before {
+    outline-width: 1px;
+  }
+
+  .has-\[\:focus\]\:before\:outline-black:has(:focus)::before {
+    outline-color: black;
+  }
 }
 
 .bg-border-color {
