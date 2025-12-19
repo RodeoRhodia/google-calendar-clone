@@ -21,11 +21,11 @@ export function AllDayEvent({ name, color }: AllDayEventProps) {
 
 interface TimedEventProps {
     name: string;
-    time: string;
+    startTime: string;
     color: "blue" | "red" | "green";
 }
 
-export function TimedEvent({ name, time, color }: TimedEventProps) {
+export function TimedEvent({ name, startTime, color }: TimedEventProps) {
     const colorClasses = {
         blue: "bg-blue-calendar",
         red: "bg-red-calendar",
@@ -37,7 +37,7 @@ export function TimedEvent({ name, time, color }: TimedEventProps) {
             <div
                 className={`rounded-full w-2 h-2 shrink-0 mr-2 ${colorClasses[color]}`}
             />
-            <div className="text-gray-500 mr-2">{time}</div>
+            <div className="text-gray-500 mr-2">{startTime}</div>
             <div className="text-gray-800">{name}</div>
         </button>
     );
