@@ -38,7 +38,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                             type="text"
                             name="name"
                             id="name"
-                            className="py-1 px-2"
+                            className="py-1 px-2 rounded-md outline outline-gray-400 focus:outline-2 focus:outline-blue-500"
                         />
                     </div>
                     <div className="flex flex-row items-center mb-4">
@@ -90,44 +90,32 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                             Color
                         </label>
                         <div className="flex">
-                            <input
-                                type="radio"
-                                name="color"
-                                value="blue"
-                                id="blue"
-                                defaultChecked
-                                className="absolute opacity-0 -left-[9999px]"
-                            />
-                            <label
-                                htmlFor="blue"
-                                className="before:content-[''] before:block before:w-7 before:h-7 before:rounded before:cursor-pointer before:opacity-25 has-[:checked]:before:opacity-100 has-[:focus]:before:outline has-[:focus]:before:outline-1 has-[:focus]:before:outline-black before:bg-blue-calendar mr-2"
-                            >
+                            <label className="before:content-[''] before:block before:w-7 before:h-7 before:rounded before:cursor-pointer before:opacity-25 has-[:checked]:before:opacity-100 has-[:focus]:before:outline has-[:focus]:before:outline-1 has-[:focus]:before:outline-black before:bg-blue-calendar mr-2">
+                                <input
+                                    type="radio"
+                                    name="color"
+                                    value="blue"
+                                    defaultChecked
+                                    className="absolute opacity-0 -left-[9999px]"
+                                />
                                 <span className="sr-only">Blue</span>
                             </label>
-                            <input
-                                type="radio"
-                                name="color"
-                                value="red"
-                                id="red"
-                                className="absolute opacity-0 -left-[9999px]"
-                            />
-                            <label
-                                htmlFor="red"
-                                className="before:content-[''] before:block before:w-7 before:h-7 before:rounded before:cursor-pointer before:opacity-25 has-[:checked]:before:opacity-100 has-[:focus]:before:outline has-[:focus]:before:outline-1 has-[:focus]:before:outline-black before:bg-red-calendar mr-2"
-                            >
+                            <label className="before:content-[''] before:block before:w-7 before:h-7 before:rounded before:cursor-pointer before:opacity-25 has-[:checked]:before:opacity-100 has-[:focus]:before:outline has-[:focus]:before:outline-1 has-[:focus]:before:outline-black before:bg-red-calendar mr-2">
+                                <input
+                                    type="radio"
+                                    name="color"
+                                    value="red"
+                                    className="absolute opacity-0 -left-[9999px]"
+                                />
                                 <span className="sr-only">Red</span>
                             </label>
-                            <input
-                                type="radio"
-                                name="color"
-                                value="green"
-                                id="green"
-                                className="absolute opacity-0 -left-[9999px]"
-                            />
-                            <label
-                                htmlFor="green"
-                                className="before:content-[''] before:block before:w-7 before:h-7 before:rounded before:cursor-pointer before:opacity-25 has-[:checked]:before:opacity-100 has-[:focus]:before:outline has-[:focus]:before:outline-1 has-[:focus]:before:outline-black before:bg-green-calendar"
-                            >
+                            <label className="before:content-[''] before:block before:w-7 before:h-7 before:rounded before:cursor-pointer before:opacity-25 has-[:checked]:before:opacity-100 has-[:focus]:before:outline has-[:focus]:before:outline-1 has-[:focus]:before:outline-black before:bg-green-calendar">
+                                <input
+                                    type="radio"
+                                    name="color"
+                                    value="green"
+                                    className="absolute opacity-0 -left-[9999px]"
+                                />
                                 <span className="sr-only">Green</span>
                             </label>
                         </div>
@@ -139,12 +127,12 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                         >
                             Add
                         </button>
-                        <button
+                        {/* <button
                             className="border border-red-calendar bg-red-50 text-red-950 hover:bg-red-100 rounded px-4 py-2 text-base cursor-pointer"
                             type="button"
                         >
                             Delete
-                        </button>
+                        </button> */}
                     </div>
                 </form>
             </div>
