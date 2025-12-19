@@ -1,16 +1,18 @@
 import { createPortal } from "react-dom";
 import { useEventContext, type Event } from "../contexts/EventContext";
 
-interface AddEventFormProps {
+interface EditEventFormProps {
     isOpen: boolean;
     onClose: () => void;
     date: string;
+    event: Event;
 }
 
-export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
+export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormProps) {
     const { setEvents } = useEventContext();
+    const dateKey = new Date(date).toISOString().split("T")[0];
 
-    function submitEventForm(e: React.FormEvent<HTMLFormElement>) {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
@@ -20,7 +22,6 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
         const endTime = formData.get("end-time") as string;
         const color = formData.get("color") as "blue" | "red" | "green";
 
-        // Validation
         if (!name) {
             alert("Name is required");
             return;
@@ -37,36 +38,47 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
             }
         }
 
-        // Create event object
-        const event: Event = {
-            id: crypto.randomUUID(),
+        const updatedEvent: Event = {
+            id: event.id,
             type: allDay ? "all-day" : "timed",
             name,
             color,
             ...(allDay ? {} : { startTime, endTime }),
         };
 
-        // Format date as YYYY-MM-DD
-        const dateKey = new Date(date).toISOString().split("T")[0];
-
-        // Console log all fields
-        console.log("Form fields:", {
-            name,
-            allDay,
-            startTime,
-            endTime,
-            color,
-        });
-        console.log("Event object:", event);
-        console.log("Date key:", dateKey);
-
-        // Save to localStorage
         setEvents((prev) => ({
             ...prev,
-            [dateKey]: [...(prev[dateKey] || []), event],
+            [dateKey]: prev[dateKey].map((e) =>
+                e.id === event.id ? updatedEvent : e
+            ),
         }));
 
-        console.log("Event saved to localStorage!");
+        onClose();
+    }
+
+    function handleDelete() {
+        console.log("Deleted");
+        console.log("event.id:", event.id);
+        console.log("dateKey:", dateKey);
+        console.log("Current events:", JSON.stringify(localStorage.getItem("EVENTS")));
+
+        setEvents((prev) => {
+            console.log("prev:", prev);
+            console.log("prev[dateKey]:", prev[dateKey]);
+
+            if (!prev[dateKey]) {
+                console.error("No events found for dateKey:", dateKey);
+                return prev;
+            }
+
+            const filtered = prev[dateKey].filter((e) => e.id !== event.id);
+            console.log("Filtered events:", filtered);
+
+            return {
+                ...prev,
+                [dateKey]: filtered,
+            };
+        });
         onClose();
     }
 
@@ -80,7 +92,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
             />
             <div className="bg-white rounded-lg p-4 z-10 min-w-[300px] max-w-[95%]">
                 <div className="text-2xl mb-6 flex justify-between items-center">
-                    <div>Add Event</div>
+                    <div>Edit Event</div>
                     <small className="text-gray-600">{date}</small>
                     <button
                         className="cursor-pointer bg-none border-none text-3xl w-8 h-8 text-center rounded-full hover:bg-gray-200"
@@ -89,7 +101,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                         &times;
                     </button>
                 </div>
-                <form onSubmit={submitEventForm}>
+                <form onSubmit={handleSubmit}>
                     <div className="flex flex-col mb-4">
                         <label
                             htmlFor="name"
@@ -101,6 +113,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                             type="text"
                             name="name"
                             id="name"
+                            defaultValue={event.name}
                             className="py-1 px-2 rounded-md outline outline-gray-400 focus:outline-2 focus:outline-blue-500"
                         />
                     </div>
@@ -109,6 +122,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                             type="checkbox"
                             name="all-day"
                             id="all-day"
+                            defaultChecked={event.type === "all-day"}
                             className="cursor-pointer"
                         />
                         <label
@@ -130,6 +144,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                 type="time"
                                 name="start-time"
                                 id="start-time"
+                                defaultValue={event.startTime}
                                 className="py-1 px-2"
                             />
                         </div>
@@ -144,6 +159,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                 type="time"
                                 name="end-time"
                                 id="end-time"
+                                defaultValue={event.endTime}
                                 className="py-1 px-2"
                             />
                         </div>
@@ -158,7 +174,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                     type="radio"
                                     name="color"
                                     value="blue"
-                                    defaultChecked
+                                    defaultChecked={event.color === "blue"}
                                     className="absolute opacity-0 -left-[9999px]"
                                 />
                                 <span className="sr-only">Blue</span>
@@ -168,6 +184,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                     type="radio"
                                     name="color"
                                     value="red"
+                                    defaultChecked={event.color === "red"}
                                     className="absolute opacity-0 -left-[9999px]"
                                 />
                                 <span className="sr-only">Red</span>
@@ -177,6 +194,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                     type="radio"
                                     name="color"
                                     value="green"
+                                    defaultChecked={event.color === "green"}
                                     className="absolute opacity-0 -left-[9999px]"
                                 />
                                 <span className="sr-only">Green</span>
@@ -188,14 +206,15 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                             className="border border-green-calendar bg-green-50 text-green-950 hover:bg-green-100 rounded px-4 py-2 text-base cursor-pointer mr-2"
                             type="submit"
                         >
-                            Add
+                            Edit
                         </button>
-                        {/* <button
+                        <button
                             className="border border-red-calendar bg-red-50 text-red-950 hover:bg-red-100 rounded px-4 py-2 text-base cursor-pointer"
                             type="button"
+                            onClick={handleDelete}
                         >
                             Delete
-                        </button> */}
+                        </button>
                     </div>
                 </form>
             </div>
