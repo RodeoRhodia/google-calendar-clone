@@ -43,3 +43,36 @@ body {
 .border-border-color {
   border-color: var(--border-color);
 }
+
+/* Custom utilities for form buttons */
+.border-red-calendar {
+  border-color: hsl(0, 75%, 60%);
+}
+
+.bg-red-50 {
+  background-color: hsl(0, 75%, 95%);
+}
+
+.text-red-950 {
+  color: hsl(0, 75%, 10%);
+}
+
+.hover\:bg-red-100:hover {
+  background-color: hsl(0, 75%, 90%);
+}
+
+.border-green-calendar {
+  border-color: hsl(150, 80%, 30%);
+}
+
+.bg-green-50 {
+  background-color: hsl(150, 80%, 95%);
+}
+
+.text-green-950 {
+  color: hsl(150, 80%, 10%);
+}
+
+.hover\:bg-green-100:hover {
+  background-color: hsl(150, 80%, 90%);
+}

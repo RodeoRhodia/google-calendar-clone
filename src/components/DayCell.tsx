@@ -16,6 +16,7 @@ export interface DayCellProps {
     isOldDay?: boolean;
     events?: Event[];
     showMoreCount?: number;
+    date: Date;
 }
 
 export function DayCell({
@@ -26,6 +27,7 @@ export function DayCell({
     isOldDay = false,
     events = [],
     showMoreCount,
+    date,
 }: DayCellProps) {
     return (
         <div
@@ -38,6 +40,7 @@ export function DayCell({
                     weekName={weekName}
                     dayNumber={dayNumber}
                     isToday={isToday}
+                    date={date}
                 />
             </div>
             {events.length > 0 && (
