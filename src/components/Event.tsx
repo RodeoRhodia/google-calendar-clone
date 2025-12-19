@@ -1,9 +1,10 @@
 interface AllDayEventProps {
     name: string;
     color: "blue" | "red" | "green";
+    onClick?: () => void;
 }
 
-export function AllDayEvent({ name, color }: AllDayEventProps) {
+export function AllDayEvent({ name, color, onClick }: AllDayEventProps) {
     const colorClasses = {
         blue: "bg-blue-calendar",
         red: "bg-red-calendar",
@@ -13,6 +14,7 @@ export function AllDayEvent({ name, color }: AllDayEventProps) {
     return (
         <button
             className={`flex items-center overflow-hidden whitespace-nowrap cursor-pointer shrink-0 bg-none w-full border-none text-base p-0 text-white px-1 py-0.5 rounded ${colorClasses[color]}`}
+            onClick={onClick}
         >
             <div className="overflow-hidden">{name}</div>
         </button>
@@ -23,9 +25,10 @@ interface TimedEventProps {
     name: string;
     startTime: string;
     color: "blue" | "red" | "green";
+    onClick?: () => void;
 }
 
-export function TimedEvent({ name, startTime, color }: TimedEventProps) {
+export function TimedEvent({ name, startTime, color, onClick }: TimedEventProps) {
     const colorClasses = {
         blue: "bg-blue-calendar",
         red: "bg-red-calendar",
@@ -33,7 +36,10 @@ export function TimedEvent({ name, startTime, color }: TimedEventProps) {
     };
 
     return (
-        <button className="flex items-center overflow-hidden whitespace-nowrap cursor-pointer shrink-0 bg-none w-full border-none text-base p-0">
+        <button
+            className="flex items-center overflow-hidden whitespace-nowrap cursor-pointer shrink-0 bg-none w-full border-none text-base p-0"
+            onClick={onClick}
+        >
             <div
                 className={`rounded-full w-2 h-2 shrink-0 mr-2 ${colorClasses[color]}`}
             />
