@@ -107,3 +107,40 @@ body {
 .hover\:bg-green-100:hover {
   background-color: hsl(150, 80%, 90%);
 }
+
+/* Modal animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-overlay {
+  animation: fade-in 250ms forwards;
+}
+
+.modal-overlay.closing {
+  animation: fade-in 250ms forwards reverse;
+}
+
+.modal-content {
+  animation: slide-up 250ms forwards;
+}
+
+.modal-content.closing {
+  animation: slide-up 250ms forwards reverse;
+}
