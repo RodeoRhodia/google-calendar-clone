@@ -51,7 +51,7 @@ export default function Calendar() {
             setEvents(sampleEventsMap);
             shouldPopulateSamples.current = false;
         }
-    }, [setEvents]);
+    }, [setEvents, dateFirstLoaded]);
 
     return (
         <EventContext.Provider value={{ events, setEvents }}>
