@@ -1,5 +1,7 @@
 import { createPortal } from "react-dom";
+import { useState, useEffect } from "react";
 import { useEventContext, type Event } from "../contexts/EventContext";
+import { convertTo12Hour, convertTo24Hour, isStartTimeBeforeEndTime } from "../utils/timeConversion";
 
 interface EditEventFormProps {
     isOpen: boolean;
@@ -11,6 +13,34 @@ interface EditEventFormProps {
 export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormProps) {
     const { setEvents } = useEventContext();
     const dateKey = new Date(date).toISOString().split("T")[0];
+    const [isAllDay, setIsAllDay] = useState(event.type === "all-day");
+    const [isClosing, setIsClosing] = useState(false);
+
+    // Handle modal close with animation
+    function handleClose() {
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            onClose();
+        }, 250); // Match animation duration
+    }
+
+    // Handle Escape key to close form
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === "Escape") {
+                handleClose();
+            }
+        }
+
+        if (isOpen) {
+            document.addEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen]);
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -21,6 +51,10 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
         const startTime = formData.get("start-time") as string;
         const endTime = formData.get("end-time") as string;
         const color = formData.get("color") as "blue" | "red" | "green";
+
+        // Convert times to 12-hour format
+        const startTime12 = startTime ? convertTo12Hour(startTime) : "";
+        const endTime12 = endTime ? convertTo12Hour(endTime) : "";
 
         if (!name) {
             alert("Name is required");
@@ -36,6 +70,11 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                 alert("End time is required");
                 return;
             }
+            // Validate that start time is before end time
+            if (!isStartTimeBeforeEndTime(startTime, endTime)) {
+                alert("Start time must be before end time");
+                return;
+            }
         }
 
         const updatedEvent: Event = {
@@ -43,7 +82,7 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
             type: allDay ? "all-day" : "timed",
             name,
             color,
-            ...(allDay ? {} : { startTime, endTime }),
+            ...(allDay ? {} : { startTime: startTime12, endTime: endTime12 }),
         };
 
         setEvents((prev) => ({
@@ -53,33 +92,33 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
             ),
         }));
 
-        onClose();
+        handleClose();
     }
 
     function handleDelete() {
-        console.log("Deleted");
-        console.log("event.id:", event.id);
-        console.log("dateKey:", dateKey);
-        console.log("Current events:", JSON.stringify(localStorage.getItem("EVENTS")));
+        // console.log("Deleted");
+        // console.log("event.id:", event.id);
+        // console.log("dateKey:", dateKey);
+        // console.log("Current events:", JSON.stringify(localStorage.getItem("EVENTS")));
 
         setEvents((prev) => {
-            console.log("prev:", prev);
-            console.log("prev[dateKey]:", prev[dateKey]);
+            // console.log("prev:", prev);
+            // console.log("prev[dateKey]:", prev[dateKey]);
 
             if (!prev[dateKey]) {
-                console.error("No events found for dateKey:", dateKey);
+                // console.error("No events found for dateKey:", dateKey);
                 return prev;
             }
 
             const filtered = prev[dateKey].filter((e) => e.id !== event.id);
-            console.log("Filtered events:", filtered);
+            // console.log("Filtered events:", filtered);
 
             return {
                 ...prev,
                 [dateKey]: filtered,
             };
         });
-        onClose();
+        handleClose();
     }
 
     if (!isOpen) return null;
@@ -87,16 +126,16 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
     return createPortal(
         <div className="fixed inset-0 flex justify-center items-center z-50">
             <div
-                className="bg-black/50 w-full h-full fixed"
-                onClick={onClose}
+                className={`bg-black/50 w-full h-full fixed modal-overlay ${isClosing ? "closing" : ""}`}
+                onClick={handleClose}
             />
-            <div className="bg-white rounded-lg p-4 z-10 min-w-[300px] max-w-[95%]">
+            <div className={`bg-white rounded-lg p-4 z-10 min-w-[300px] max-w-[95%] modal-content ${isClosing ? "closing" : ""}`}>
                 <div className="text-2xl mb-6 flex justify-between items-center">
                     <div>Edit Event</div>
                     <small className="text-gray-600">{date}</small>
                     <button
                         className="cursor-pointer bg-none border-none text-3xl w-8 h-8 text-center rounded-full hover:bg-gray-200"
-                        onClick={onClose}
+                        onClick={handleClose}
                     >
                         &times;
                     </button>
@@ -123,13 +162,14 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                             name="all-day"
                             id="all-day"
                             defaultChecked={event.type === "all-day"}
+                            onChange={(e) => setIsAllDay(e.target.checked)}
                             className="cursor-pointer"
                         />
                         <label
                             htmlFor="all-day"
                             className="pl-2 cursor-pointer font-bold text-xs text-gray-500"
                         >
-                            All Day?
+                            All Day
                         </label>
                     </div>
                     <div className="flex">
@@ -144,8 +184,9 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                                 type="time"
                                 name="start-time"
                                 id="start-time"
-                                defaultValue={event.startTime}
-                                className="py-1 px-2"
+                                defaultValue={event.startTime ? convertTo24Hour(event.startTime) : ""}
+                                disabled={isAllDay}
+                                className="py-1 px-2 disabled:bg-gray-200 disabled:text-gray-400"
                             />
                         </div>
                         <div className="flex flex-col mb-4 flex-grow">
@@ -159,8 +200,9 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                                 type="time"
                                 name="end-time"
                                 id="end-time"
-                                defaultValue={event.endTime}
-                                className="py-1 px-2"
+                                defaultValue={event.endTime ? convertTo24Hour(event.endTime) : ""}
+                                disabled={isAllDay}
+                                className="py-1 px-2 disabled:bg-gray-200 disabled:text-gray-400"
                             />
                         </div>
                     </div>
@@ -206,7 +248,7 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                             className="border border-green-calendar bg-green-50 text-green-950 hover:bg-green-100 rounded px-4 py-2 text-base cursor-pointer mr-2"
                             type="submit"
                         >
-                            Edit
+                            Save
                         </button>
                         <button
                             className="border border-red-calendar bg-red-50 text-red-950 hover:bg-red-100 rounded px-4 py-2 text-base cursor-pointer"
