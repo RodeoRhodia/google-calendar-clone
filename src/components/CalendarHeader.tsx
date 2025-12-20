@@ -30,7 +30,7 @@ export function CalendarHeader({ currentDate, setCurrentDate,}: CalendarHeaderPr
                 Today
             </button>
             <div className="mr-2">
-                <button onClick={showPreviousMonth} className="cursor-pointer bg-none border-none text-xl w-8 h-8 p-0 text-center rounded-full transition-colors duration-250 text-gray-800 hover:bg-gray-100 -mr-2">
+                <button onClick={showPreviousMonth} className="cursor-pointer bg-none border-none text-xl w-8 h-8 p-0 mr-2 text-center rounded-full transition-colors duration-250 text-gray-800 hover:bg-gray-100">
                     &lt;
                 </button>
                 <button onClick={showNextMonth} className="cursor-pointer bg-none border-none text-xl w-8 h-8 p-0 text-center rounded-full transition-colors duration-250 text-gray-800 hover:bg-gray-100">
