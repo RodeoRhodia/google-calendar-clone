@@ -24,16 +24,47 @@ body {
 }
 
 /* Custom Tailwind utilities for calendar colors */
-.bg-blue-calendar {
-  background-color: var(--blue-background);
-}
+@layer utilities {
+  .bg-blue-calendar {
+    background-color: var(--blue-background);
+  }
 
-.bg-red-calendar {
-  background-color: var(--red-background);
-}
+  .bg-red-calendar {
+    background-color: var(--red-background);
+  }
 
-.bg-green-calendar {
-  background-color: var(--green-background);
+  .bg-green-calendar {
+    background-color: var(--green-background);
+  }
+
+  .before\:bg-blue-calendar::before {
+    background-color: var(--blue-background);
+  }
+
+  .before\:bg-red-calendar::before {
+    background-color: var(--red-background);
+  }
+
+  .before\:bg-green-calendar::before {
+    background-color: var(--green-background);
+  }
+
+  /* Support for has-[:checked] and has-[:focus] pseudo-class variants */
+  .has-\[\:checked\]\:before\:opacity-100:has(:checked)::before {
+    opacity: 1;
+  }
+
+  .has-\[\:focus\]\:before\:outline:has(:focus)::before {
+    outline-style: solid;
+  }
+
+  .has-\[\:focus\]\:before\:outline-1:has(:focus)::before {
+    outline-width: 1px;
+  }
+
+  .has-\[\:focus\]\:before\:outline-black:has(:focus)::before {
+    outline-color: black;
+  }
 }
 
 .bg-border-color {
@@ -42,4 +73,74 @@ body {
 
 .border-border-color {
   border-color: var(--border-color);
+}
+
+/* Custom utilities for form buttons */
+.border-red-calendar {
+  border-color: hsl(0, 75%, 60%);
+}
+
+.bg-red-50 {
+  background-color: hsl(0, 75%, 95%);
+}
+
+.text-red-950 {
+  color: hsl(0, 75%, 10%);
+}
+
+.hover\:bg-red-100:hover {
+  background-color: hsl(0, 75%, 90%);
+}
+
+.border-green-calendar {
+  border-color: hsl(150, 80%, 30%);
+}
+
+.bg-green-50 {
+  background-color: hsl(150, 80%, 95%);
+}
+
+.text-green-950 {
+  color: hsl(150, 80%, 10%);
+}
+
+.hover\:bg-green-100:hover {
+  background-color: hsl(150, 80%, 90%);
+}
+
+/* Modal animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-overlay {
+  animation: fade-in 250ms forwards;
+}
+
+.modal-overlay.closing {
+  animation: fade-in 250ms forwards reverse;
+}
+
+.modal-content {
+  animation: slide-up 250ms forwards;
+}
+
+.modal-content.closing {
+  animation: slide-up 250ms forwards reverse;
 }
