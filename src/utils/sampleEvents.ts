@@ -171,7 +171,7 @@ export const sampleEventsSixDaysAfter: Event[] = [
     {
         id: "20004",
         type: "timed",
-        name: "Office Supply Pickup",
+        name: "Drop Off Donation at Shelter",
         color: "blue",
         startTime: "4:30pm",
         endTime: "5:00pm",
