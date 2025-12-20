@@ -186,7 +186,7 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                                 id="start-time"
                                 defaultValue={event.startTime ? convertTo24Hour(event.startTime) : ""}
                                 disabled={isAllDay}
-                                className="py-1 px-2 disabled:bg-gray-200 disabled:text-gray-400"
+                                className="py-1 px-2 rounded-md outline outline-gray-400 disabled:bg-gray-200 disabled:text-gray-400"
                             />
                         </div>
                         <div className="flex flex-col mb-4 flex-grow">
@@ -202,7 +202,7 @@ export function EditEventForm({ isOpen, onClose, date, event }: EditEventFormPro
                                 id="end-time"
                                 defaultValue={event.endTime ? convertTo24Hour(event.endTime) : ""}
                                 disabled={isAllDay}
-                                className="py-1 px-2 disabled:bg-gray-200 disabled:text-gray-400"
+                                className="py-1 px-2 rounded-md outline outline-gray-400 disabled:bg-gray-200 disabled:text-gray-400"
                             />
                         </div>
                     </div>

@@ -172,7 +172,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                 name="start-time"
                                 id="start-time"
                                 disabled={isAllDay}
-                                className="py-1 px-2 disabled:bg-gray-200 disabled:text-gray-400"
+                                className="py-1 px-2 rounded-md outline outline-gray-400 disabled:bg-gray-200 disabled:text-gray-400"
                             />
                         </div>
                         <div className="flex flex-col mb-4 flex-grow">
@@ -187,7 +187,7 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
                                 name="end-time"
                                 id="end-time"
                                 disabled={isAllDay}
-                                className="py-1 px-2 disabled:bg-gray-200 disabled:text-gray-400"
+                                className="py-1 px-2 rounded-md outline outline-gray-400 disabled:bg-gray-200 disabled:text-gray-400"
                             />
                         </div>
                     </div>
