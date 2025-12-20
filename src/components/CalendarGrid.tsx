@@ -12,6 +12,7 @@ import {
     isPast,
 } from "date-fns";
 import { useEventContext } from "../contexts/EventContext";
+import { compareTimesFor12Hour } from "../utils/timeConversion";
 
 type CalendarGridProps = {
     currentDate: Date;
@@ -31,13 +32,22 @@ export function CalendarGrid({ currentDate }: CalendarGridProps) {
             const dateKey = format(date, "yyyy-MM-dd");
             const dayEvents = events[dateKey] || [];
 
+			const allDayEvents = dayEvents.filter(event => event.type === "all-day");
+			let timedEvents = dayEvents.filter(event => event.type === "timed");
+			timedEvents = timedEvents.sort((event1, event2) =>
+				compareTimesFor12Hour(
+					event1?.startTime ?? "",
+					event2?.startTime ?? ""
+				)
+			);
+			
             let dayCell: DayCellProps = {
                 dayNumber: date.getDate(),
                 isNonMonthDay: !isSameMonth(date, currentDate),
                 isToday: isToday(date),
                 isOldDay: isPast(date) && !isToday(date),
                 date,
-                events: dayEvents,
+                events: [...allDayEvents, ...timedEvents],
             };
 
             if (index < 7) {
