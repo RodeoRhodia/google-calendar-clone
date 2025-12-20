@@ -2,7 +2,7 @@
 
 A fully-featured Google Calendar clone built with React 19, TypeScript, and Tailwind CSS 4. This is a learning project for exploring advanced React concepts.
 
-**Live Demo:** [put vercel link here]
+**Live Demo:** (https://google-calendar-clone-ten.vercel.app/)
 
 ## Features
 
