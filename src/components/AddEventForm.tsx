@@ -115,9 +115,15 @@ export function AddEventForm({ isOpen, onClose, date }: AddEventFormProps) {
         <div className="fixed inset-0 flex justify-center items-center z-50">
             <div
                 className={`bg-black/50 w-full h-full fixed modal-overlay ${isClosing ? "closing" : ""}`}
-                onClick={handleClose}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    handleClose();
+                }}
             />
-            <div className={`bg-white rounded-lg p-4 z-10 min-w-[300px] max-w-[95%] modal-content ${isClosing ? "closing" : ""}`}>
+            <div
+                className={`bg-white rounded-lg p-4 z-10 min-w-[300px] max-w-[95%] modal-content ${isClosing ? "closing" : ""}`}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className="text-2xl mb-6 flex justify-between items-center">
                     <div>Add Event</div>
                     <small className="text-gray-600">{date}</small>

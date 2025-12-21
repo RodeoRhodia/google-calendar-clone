@@ -34,7 +34,7 @@ export function DayCell({
 
     function handleCellClick(e: React.MouseEvent<HTMLDivElement>) {
         // Don't trigger if clicking on a button (events or overflow button)
-        if ((e.target as HTMLElement).closest("button")) {
+        if ((e.target as HTMLElement).closest("button, input, form")) {
             return;
         }
         setIsAddModalOpen(true);
