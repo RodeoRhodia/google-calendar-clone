@@ -33,8 +33,17 @@ export function DayCell({
     const dateString = format(date, "M/d/yy");
 
     function handleCellClick(e: React.MouseEvent<HTMLDivElement>) {
+        const target = e.target as HTMLElement;
+
+        // Don't trigger if click came from a modal portal (React synthetic event bubbling)
+        if (
+            target.closest(".modal-content, .modal-overlay") ||
+            target.querySelector(".modal-content, .modal-overlay")
+        ) {
+            return;
+        }
         // Don't trigger if clicking on a button (events or overflow button)
-        if ((e.target as HTMLElement).closest("button, input, form")) {
+        if (target.closest("button, input, form")) {
             return;
         }
         setIsAddModalOpen(true);
